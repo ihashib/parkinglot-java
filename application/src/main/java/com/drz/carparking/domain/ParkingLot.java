@@ -2,6 +2,7 @@ package com.drz.carparking.domain;
 
 import com.drz.carparking.exceptions.ParkingLotFullException;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 public class ParkingLot {
@@ -94,20 +95,49 @@ public class ParkingLot {
             if (Objects.equals(car.getColor(), color))
                 carRegList.add(car.getRegistrationNumber());
         }
+        if(carRegList.size() > 0)
+            return carRegList;
 
-        return carRegList;
+        return null;
     }
 
     public List<Integer> getSlotNumbersByColor(String color) {
         //TODO: implement getSlotNumbersByColor
+
+        //check if there is any car in parking lot
+        if(this.occupiedSlots.size() == 0)
+            return null;
+
+        //return list of slot numbers
+        List<Integer> slotList = new ArrayList<>();
+        //iterate though the occupied slots to find reg nums of cars
+        for(ParkingSlot slot : this.occupiedSlots) {
+            Car car = slot.getCar();
+            if (Objects.equals(car.getColor(), color))
+                slotList.add(slot.getSlotNumber());
+        }
+        if(slotList.size() > 0)
+            return slotList;
+
         return null;
     }
 
-    public Optional<Integer> getSlotNumberByRegistrationNumber(
-        String registrationNumber
-    ) {
+    public Optional<Integer> getSlotNumberByRegistrationNumber(String registrationNumber) {
         //TODO: implement getSlotNumberByRegistrationNumber
-        return null;
+        //check if there is any car in parking lot
+        if(this.occupiedSlots.size() == 0)
+            return null;
+
+        //return list of registration numbers
+        Optional<Integer> slotNum = null;
+        //iterate though the occupied slots to find reg nums of cars
+        for(ParkingSlot slot : this.occupiedSlots) {
+            Car car = slot.getCar();
+            if (Objects.equals(car.getRegistrationNumber(), registrationNumber))
+                slotNum = Optional.of(slot.getSlotNumber());
+        }
+
+        return slotNum;
     }
 
     public int getNumSlots() {
