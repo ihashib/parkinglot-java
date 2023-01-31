@@ -81,7 +81,21 @@ public class ParkingLot {
 
     public List<String> getRegistrationNumbersByColor(String color) {
         //TODO: implement getRegistrationNumbersByColor
-        return null;
+
+        //check if there is any car in parking lot
+        if(this.occupiedSlots.size() == 0)
+            return null;
+
+        //list tobe returned
+        List<String> carRegList = new ArrayList<>();
+        //iterate though the occupied slots to find reg nums of cars
+        for(ParkingSlot slot : this.occupiedSlots) {
+            Car car = slot.getCar();
+            if (Objects.equals(car.getColor(), color))
+                carRegList.add(car.getRegistrationNumber());
+        }
+
+        return carRegList;
     }
 
     public List<Integer> getSlotNumbersByColor(String color) {
