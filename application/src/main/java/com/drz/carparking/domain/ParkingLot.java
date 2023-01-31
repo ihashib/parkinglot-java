@@ -52,8 +52,28 @@ public class ParkingLot {
 
     public ParkingSlot leaveSlot(int slotNumber) {
         //TODO: implement leave
+
+        //check if there is any car remaining
+        if(this.occupiedSlots.size() == 0)
+            return null;
+
+        //Find the slot number in the occupiedSlots
+        ParkingSlot slotTobeFree = null;
+        for(ParkingSlot slot : this.occupiedSlots) {
+            if (slot.getSlotNumber() == slotNumber) {
+                slotTobeFree = slot;
+                break;
+            }
+        }
+
+        //clear information of the tobe free slot
+        if(slotTobeFree != null){
+            slotTobeFree.clear();
+        }
+
         return null;
     }
+
 
     public boolean isFull() {
         return this.availableSlots.isEmpty();
