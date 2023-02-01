@@ -55,24 +55,25 @@ public class ParkingLot {
         //TODO: implement leave
 
         //check if there is any car remaining
-        if(this.occupiedSlots.size() == 0)
-            return null;
-
-        //Find the slot number in the occupiedSlots
         ParkingSlot slotTobeFree = null;
-        for(ParkingSlot slot : this.occupiedSlots) {
-            if (slot.getSlotNumber() == slotNumber) {
-                slotTobeFree = slot;
-                break;
+        if(this.occupiedSlots.size() > 0) {
+            //Find the slot number in the occupiedSlots
+            for (ParkingSlot slot : this.occupiedSlots) {
+                if (slot.getSlotNumber() == slotNumber) {
+                    slotTobeFree = slot;
+                    break;
+                }
+            }
+
+            //clear information of the tobe free slot
+            if (slotTobeFree != null) {
+                occupiedSlots.remove(slotTobeFree);
+                availableSlots.add(slotTobeFree);
+                slotTobeFree.clear();
             }
         }
 
-        //clear information of the tobe free slot
-        if(slotTobeFree != null){
-            slotTobeFree.clear();
-        }
-
-        return null;
+        return slotTobeFree;
     }
 
 
@@ -95,10 +96,7 @@ public class ParkingLot {
             if (Objects.equals(car.getColor(), color))
                 carRegList.add(car.getRegistrationNumber());
         }
-        if(carRegList.size() > 0)
-            return carRegList;
-
-        return null;
+        return carRegList;
     }
 
     public List<Integer> getSlotNumbersByColor(String color) {
@@ -116,20 +114,17 @@ public class ParkingLot {
             if (Objects.equals(car.getColor(), color))
                 slotList.add(slot.getSlotNumber());
         }
-        if(slotList.size() > 0)
-            return slotList;
-
-        return null;
+        return slotList;
     }
 
     public Optional<Integer> getSlotNumberByRegistrationNumber(String registrationNumber) {
         //TODO: implement getSlotNumberByRegistrationNumber
         //check if there is any car in parking lot
         if(this.occupiedSlots.size() == 0)
-            return null;
+            return Optional.empty();
 
         //return list of registration numbers
-        Optional<Integer> slotNum = null;
+        Optional<Integer> slotNum = Optional.empty();
         //iterate though the occupied slots to find reg nums of cars
         for(ParkingSlot slot : this.occupiedSlots) {
             Car car = slot.getCar();
