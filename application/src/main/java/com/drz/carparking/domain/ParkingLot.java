@@ -1,6 +1,7 @@
 package com.drz.carparking.domain;
 
 import com.drz.carparking.exceptions.ParkingLotFullException;
+import com.drz.carparking.exceptions.SlotNotFoundException;
 
 import javax.swing.text.html.Option;
 import java.util.*;
@@ -51,7 +52,7 @@ public class ParkingLot {
         );
     }
 
-    public ParkingSlot leaveSlot(int slotNumber) {
+    public ParkingSlot leaveSlot(int slotNumber) throws SlotNotFoundException{
         //TODO: implement leave
 
         //check if there is any car remaining
@@ -61,17 +62,19 @@ public class ParkingLot {
             for (ParkingSlot slot : this.occupiedSlots) {
                 if (slot.getSlotNumber() == slotNumber) {
                     slotTobeFree = slot;
+
+                    //clear information of the tobe free slot
+                    occupiedSlots.remove(slotTobeFree);
+                    availableSlots.add(slotTobeFree);
+                    slotTobeFree.clear();
                     break;
                 }
             }
-
-            //clear information of the tobe free slot
-            if (slotTobeFree != null) {
-                occupiedSlots.remove(slotTobeFree);
-                availableSlots.add(slotTobeFree);
-                slotTobeFree.clear();
-            }
         }
+
+        //throw exception when the slot is out of bounds
+        if(slotTobeFree == null)
+            throw new SlotNotFoundException(slotNumber);
 
         return slotTobeFree;
     }
